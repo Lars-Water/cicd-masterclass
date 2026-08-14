@@ -24,3 +24,10 @@ Workflow Triggers & Structure
 
 * PR validation workflow
 * Manual Redeploy Trigger
+
+---
+
+Security
+
+* Added SHA pinning
+* Added CODEOWNERS
