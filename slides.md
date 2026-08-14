@@ -12,6 +12,15 @@ SDLC
 
 CI/CD
 
+Types of CI/CD
+
 * Continuous Integration
 * Continuous Delivery
 * Continuous Deployment
+
+---
+
+Workflow Triggers & Structure
+
+* PR validation workflow
+* Manual Redeploy Trigger
