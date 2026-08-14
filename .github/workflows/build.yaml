@@ -1,6 +1,13 @@
 name: Build Slidev
 
-on: [push]
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      intent:
+        description: Operator intent for this manual deployment
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -18,6 +25,13 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+
+      - name: Log manual deployment intent
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        env:
+          OPERATOR_INTENT: ${{ inputs.intent }}
+        run: |
+          printf 'Operator intent: %s\n' "$OPERATOR_INTENT"
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
