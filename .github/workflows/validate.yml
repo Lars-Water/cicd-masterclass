@@ -19,7 +19,23 @@ permissions:
     contents: read
 
 jobs:
+    lint:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Check out repository
+              uses: actions/checkout@v4
+
+            - name: Run Markdownlint
+              uses: nosborn/github-action-markdown-cli@508d6cefd8f0cc99eab5d2d4685b1d5f470042c1 # v3.5.0
+              with:
+                  files: '**/*.md'
+                  config_file: .markdownlint.json
+
     build:
+        needs: lint
+      outputs:
+        slide-count: ${{ steps.slide-count.outputs.count }}
         runs-on: ubuntu-latest
 
         steps:
@@ -53,4 +69,23 @@ jobs:
 
             - name: Build Slidev
               run: pnpm run build
+
+            - name: Count slides
+              id: slide-count
+              run: echo "count=$(grep -c '^---$' slides.md)" >> "$GITHUB_OUTPUT"
+
+            - name: Upload build artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: slidev-dist
+                  path: dist
+                  retention-days: 7
+
+    summary:
+        needs: build
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Report validation summary
+              run: echo "Build completed with ${{ needs.build.outputs.slide-count }} slides"
 
