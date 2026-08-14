@@ -12,6 +12,8 @@ SDLC
 
 CI/CD
 
+Types of CI/CD
+
 * Continuous Integration
 * Continuous Delivery
 * Continuous Deployment
